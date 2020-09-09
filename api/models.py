@@ -8,8 +8,7 @@ User = get_user_model()
 
 class Group(models.Model):
     title = models.CharField(max_length=200)
-    slug = models.SlugField()
-    description = models.TextField()
+    description = models.TextField(blank=True)
 
     def __str__(self):
         return self.title
@@ -51,16 +50,13 @@ class Follow(models.Model):
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='follower'
     )
-    author = models.ForeignKey(
+    following = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='following'
     )
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(
-                fields=['user', 'author'], name='unique_user_author'
-            ),
             models.CheckConstraint(
-                check=~Q(user=F('author')), name='user_not_author'
+                check=~Q(user=F('following')), name='same_user'
             ),
         ]
