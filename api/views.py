@@ -36,12 +36,9 @@ class GroupView(generics.ListCreateAPIView):
     permission_classes = (IsAuthenticatedOrReadOnly,)
 
 
-class FollowView(generics.ListCreateAPIView):
+class FollowView(SetAuthorOnCreateMixin, generics.ListCreateAPIView):
     queryset = Follow.objects.all()
     serializer_class = FollowSerializer
     permission_classes = (IsAuthenticatedOrReadOnly,)
     filter_backends = [filters.SearchFilter]
     search_fields = ['=user__username', '=following__username']
-
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
