@@ -3,7 +3,7 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 from django.db.models import Q
 
-from .mixins import PerformMixin
+from .mixins import SetAuthorOnCreateMixin
 from .models import Comment, Follow, Group, Post
 from .permissions import IsOwner
 from .serializers import (
@@ -14,7 +14,7 @@ from .serializers import (
 )
 
 
-class PostViewSet(PerformMixin, viewsets.ModelViewSet):
+class PostViewSet(SetAuthorOnCreateMixin, viewsets.ModelViewSet):
     serializer_class = PostSerializer
     permission_classes = (IsOwner,)
 
@@ -26,7 +26,7 @@ class PostViewSet(PerformMixin, viewsets.ModelViewSet):
         return queryset
 
 
-class CommentView(PerformMixin, viewsets.ModelViewSet):
+class CommentView(SetAuthorOnCreateMixin, viewsets.ModelViewSet):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
     permission_classes = (IsOwner,)
