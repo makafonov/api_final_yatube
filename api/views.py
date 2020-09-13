@@ -36,7 +36,7 @@ class GroupView(generics.ListCreateAPIView):
     permission_classes = (IsAuthenticatedOrReadOnly,)
 
 
-class FollowView(SetAuthorOnCreateMixin, generics.ListCreateAPIView):
+class FollowView(generics.ListCreateAPIView):
     queryset = Follow.objects.all()
     serializer_class = FollowSerializer
     permission_classes = (IsAuthenticatedOrReadOnly,)
